@@ -25,13 +25,13 @@ RED = MAROON
 PLOT_BG = "rgba(190,222,255,0.16)"
 
 st.set_page_config(
-    page_title="INVESTION | Volatility Intelligence",
-    page_icon="📈",
+    page_title="Volatility Intelligence",
+    page_icon="💲",
     layout="wide",
     initial_sidebar_state="collapsed",
 )
 
-# Tema cerah, elemen astronomi dekoratif, kontrol tanggal terbaca, dan ikon sidebar kontras.
+# Tema tetap dengan elemen dekoratif dan kontrol tanggal terbaca.
 st.markdown(f"""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap');
@@ -50,38 +50,17 @@ html, body, [class*="css"] {{ font-family:'DM Sans',sans-serif; color:{TEXT}; }}
   background-attachment: fixed;
   color:{TEXT};
 }}
-[data-testid="stHeader"], [data-testid="stToolbar"] {{ background:rgba(233,245,255,.96)!important; }}
-[data-testid="stAppDeployButton"] {{ background:transparent!important; }}
-[data-testid="stMainBlockContainer"] {{ padding:0.65rem 1.15rem 1.1rem; max-width:100%; }}
-/* Sidebar: light azure with framed square navigation controls. */
-[data-testid="stSidebar"] {{
-  background:linear-gradient(180deg,#D7ECFA 0%,#BEDEFF 56%,#EAF5FF 100%);
-  border-right:2px solid rgba(71,47,38,.35);
-  box-shadow:8px 0 28px rgba(71,47,38,.09);
-}}
-[data-testid="stSidebar"] > div:first-child {{ border-right:0; }}
-[data-testid="stSidebar"] h1,[data-testid="stSidebar"] h2,[data-testid="stSidebar"] h3,
-[data-testid="stSidebar"] p,[data-testid="stSidebar"] label,
-[data-testid="stSidebar"] span,[data-testid="stSidebar"] small {{ color:{BROWN} !important; }}
-[data-testid="stSidebar"] [data-testid="stDateInput"] input {{
+[data-testid="stHeader"], [data-testid="stToolbar"],
+[data-testid="stSidebar"], [data-testid="collapsedControl"],
+[data-testid="stSidebarCollapsedControl"] {{ display:none!important; }}
+[data-testid="stMainBlockContainer"] {{ padding:1.1rem 1.15rem; max-width:100%; }}
+[data-testid="stDateInput"] input {{
   background:#FFFDF7!important; color:{GOLD}!important; -webkit-text-fill-color:{GOLD}!important;
   border:1px solid {BROWN}!important; border-radius:5px!important; font-weight:650!important;
 }}
-[data-testid="stDateInput"] input {{ color:{GOLD}!important; -webkit-text-fill-color:{GOLD}!important; }}
-[data-testid="stSidebar"] [data-testid="stSelectbox"] div {{ color:{BROWN}!important; }}
 [data-baseweb="popover"], [data-baseweb="calendar"] {{ background:#FFFDF7!important; color:{BROWN}!important; }}
 [data-baseweb="calendar"] [role="gridcell"] {{ color:{GOLD}!important; }}
 [data-testid="stCaptionContainer"] {{ color:{BROWN}!important; }}
-/* Make the open/close sidebar arrow very visible on light and collapsed states. */
-[data-testid="collapsedControl"] button,
-[data-testid="stSidebarCollapseButton"] button,
-[data-testid="stSidebarCollapsedControl"] button {{
-  background:#FFFDF7!important; color:{BROWN}!important; border:2px solid {BROWN}!important;
-  border-radius:5px!important; box-shadow:0 3px 10px rgba(71,47,38,.18)!important;
-}}
-[data-testid="collapsedControl"] svg,
-[data-testid="stSidebarCollapseButton"] svg,
-[data-testid="stSidebarCollapsedControl"] svg {{ color:{BROWN}!important; stroke:{BROWN}!important; fill:none!important; }}
 /* Typography and visual cards */
 h1,h2,h3,h4 {{ color:{BROWN}; font-family:'Manrope',sans-serif!important; letter-spacing:-.025em; }}
 .eyebrow {{ color:{BROWN}; text-transform:uppercase; letter-spacing:2px; font-size:.75rem; font-weight:800; }}
@@ -105,7 +84,7 @@ h1,h2,h3,h4 {{ color:{BROWN}; font-family:'Manrope',sans-serif!important; letter
 .section-head h3 {{ margin:0; font-size:1.08rem; color:{BROWN}; }}
 .panel {{ border:1px solid rgba(71,47,38,.22); border-radius:7px; padding:15px 17px; background:rgba(255,253,247,.68); color:{BROWN}; height:100%; }}
 .business-note {{ background:linear-gradient(112deg,rgba(255,242,167,.75),rgba(190,222,255,.43)); border:1.5px solid rgba(71,47,38,.25); border-left:5px solid {MAROON}; border-radius:7px; padding:18px; color:{BROWN}; line-height:1.65; }}
-.dashboard-title {{ margin:4px 0 12px; padding:15px 20px; border:1.5px solid rgba(71,47,38,.24); border-left:6px solid {MAROON}; border-radius:7px; background:linear-gradient(105deg,rgba(190,222,255,.92),rgba(255,253,247,.96)); box-shadow:0 7px 19px rgba(71,47,38,.08); font-size:clamp(1.6rem,2.4vw,2.2rem); }}
+.dashboard-title {{ margin:4px 0 10px; padding:15px 20px; border:1.5px solid rgba(71,47,38,.24); border-radius:7px; background:rgba(255,253,247,.88); box-shadow:0 7px 19px rgba(71,47,38,.08); font-size:clamp(1.6rem,2.4vw,2.2rem); }}
 .small-muted {{ color:{MUTED}; font-size:.86rem; line-height:1.5; }}
 .legend-pill {{ display:inline-block; margin:3px 7px 5px 0; padding:5px 9px; border:1px solid rgba(71,47,38,.2); border-radius:4px; font-size:.78rem; font-weight:700; color:{BROWN}; }}
 .legend-blue {{ background:{AZURE}; }} .legend-red {{ background:#F1C8D5; }} .legend-yellow {{ background:{BASELINE}; }}
@@ -187,6 +166,10 @@ def style_table(frame):
 
 def pct(value):
     return "—" if pd.isna(value) else f"{value:.2%}"
+
+
+def display_label(value):
+    return str(value).replace("_", " ")
 
 
 def risk_color(label):
@@ -272,7 +255,7 @@ def metric_reduction_percent(baseline, model, metric, export_column):
 
 def badge_for_risk(label):
     col = risk_color(label)
-    return f"<span style='display:inline-block;border:1.5px solid {col};padding:7px 11px;border-radius:4px;color:{col};font-weight:850;background:rgba(255,253,247,.7)'>{label}</span>"
+    return f"<span style='display:inline-block;border:1.5px solid {col};padding:7px 11px;border-radius:4px;color:{col};font-weight:850;background:rgba(255,253,247,.7)'>{display_label(label)}</span>"
 
 
 # Read project CSV artifacts.
@@ -328,35 +311,27 @@ def select_test_date_range(source, date_range):
     return source
 
 
-# Sidebar filters. Native collapse control starts closed and can be opened using the high-contrast arrow.
-with st.sidebar:
-    st.markdown(
-        f"""<div class="brand"><div class="brand-icon">✦</div><div><b style="font-size:1.16rem">INVESTION</b><br><small>VOLATILITY INTELLIGENCE</small></div></div>
-        <div style="border:1.5px solid rgba(71,47,38,.32);padding:10px 12px;background:rgba(255,253,247,.55);margin-bottom:13px"><b>QUANT RISK DESK</b><br><small>IHSG · CatBoost · 5D forecast</small></div>""",
-        unsafe_allow_html=True,
+st.markdown(
+    "<h1 class='dashboard-title'> Volatility Intelligence</h1>",
+    unsafe_allow_html=True,
+)
+
+base_source = test_pred if test_pred is not None and not test_pred.empty else test_detail
+if base_source is not None and not base_source.empty:
+    date_column = "Date" if "Date" in base_source.columns else "Tanggal"
+    date_min, date_max = base_source[date_column].min().date(), base_source[date_column].max().date()
+    selected_range = st.date_input(
+        "Rentang tanggal",
+        value=(date_min, date_max),
+        min_value=date_min,
+        max_value=date_max,
     )
-    st.markdown("**FILTER DATA**")
-    base_source = test_pred if test_pred is not None and not test_pred.empty else test_detail
-    if base_source is not None and not base_source.empty:
-        dcol = "Date" if "Date" in base_source.columns else "Tanggal"
-        dmin, dmax = base_source[dcol].min().date(), base_source[dcol].max().date()
-        selected_range = st.date_input("Rentang tanggal", value=(dmin, dmax), min_value=dmin, max_value=dmax)
-    else:
-        selected_range = None
-    st.markdown("**Status model**")
-    st.markdown("<div class='side-status'>CatBoost · coba 7 fix.ipynb<br><small>CSV hasil analisis · folder data/</small></div>", unsafe_allow_html=True)
-    st.divider()
-    st.markdown(f"<span class='legend-pill legend-yellow'>Baseline · {BASELINE}</span>", unsafe_allow_html=True)
-    st.caption("Gunakan kontrol panah di bagian atas aplikasi untuk menyembunyikan atau membuka sidebar.")
+else:
+    selected_range = None
 
 # Prepare globally filtered test rows for the dashboard.
 filtered_test = select_test_date_range(test_pred, selected_range) if test_pred is not None else None
 filtered_detail = select_test_date_range(test_detail, selected_range) if test_detail is not None else None
-
-st.markdown(
-    "<h1 class='dashboard-title'>Judul</h1>",
-    unsafe_allow_html=True,
-)
 
 dashboard_sections = {
     "KPI & EWS",
@@ -392,7 +367,7 @@ if "KPI & EWS" in dashboard_sections:
         with col:
             risk_style = f"color:{risk_color(value)};font-size:clamp(.98rem,1.3vw,1.45rem)" if label == "STATUS EWS" else ""
             st.markdown(
-                f"<div class='metric-card'><div class='metric-label'>{label}</div><div class='metric-value' style='{risk_style}'>{value}</div><div class='metric-note'>{note}</div></div>",
+                f"<div class='metric-card'><div class='metric-label'>{label}</div><div class='metric-value' style='{risk_style}'>{display_label(value)}</div><div class='metric-note'>{note}</div></div>",
                 unsafe_allow_html=True,
             )
 
@@ -630,7 +605,7 @@ if "Explainable AI & Projection" in dashboard_sections:
     top_cols = st.columns(3, gap="medium")
     for col, (_, row) in zip(top_cols, top3.iterrows()):
         with col:
-            st.markdown(f"<div class='metric-card'><div class='metric-label'>RANK {int(row['Rank'])}</div><div class='metric-value' style='font-size:1.28rem'>{row['Feature']}</div><div class='metric-note'>Mean |SHAP|: {float(row['Mean_Abs_SHAP']):.5f}<br>Importance relatif: {float(row['Percentage_Importance (%)']):.2f}%</div></div>", unsafe_allow_html=True)
+            st.markdown(f"<div class='metric-card'><div class='metric-label'>RANK {int(row['Rank'])}</div><div class='metric-value' style='font-size:1.28rem'>{display_label(row['Feature'])}</div><div class='metric-note'>Mean |SHAP|: {float(row['Mean_Abs_SHAP']):.5f}<br>Importance relatif: {float(row['Percentage_Importance (%)']):.2f}%</div></div>", unsafe_allow_html=True)
 
     st.markdown("<div class='section-head'><span>05b</span><h3>SHAP Lokal · Pilih Tanggal</h3></div>", unsafe_allow_html=True)
     options = []
@@ -670,7 +645,7 @@ if "Explainable AI & Projection" in dashboard_sections:
         if shap_row is not None:
             selected_xai_row = shap_row
             shap_cols = [c for c in shap_row.index if c.startswith("SHAP_") and pd.notna(shap_row[c])]
-            local = pd.DataFrame({"Feature": [c.replace("SHAP_", "") for c in shap_cols], "SHAP": [float(shap_row[c]) for c in shap_cols]})
+            local = pd.DataFrame({"Feature": [display_label(c.removeprefix("SHAP_")) for c in shap_cols], "SHAP": [float(shap_row[c]) for c in shap_cols]})
             local["Abs_SHAP"] = local["SHAP"].abs()
             local = local.sort_values("Abs_SHAP", ascending=True).tail(12)
             local["Arah kontribusi"] = np.where(local["SHAP"] >= 0, "Mendorong prediksi naik", "Mendorong prediksi turun")
@@ -692,8 +667,11 @@ if "Explainable AI & Projection" in dashboard_sections:
                 down_text = ", ".join(down) if down else "Tidak ada faktor negatif di antara lima kontribusi terkuat."
                 st.markdown(f"<div class='business-note'><b>Terjemahan bahasa bisnis · {chosen_date}</b><br><br><b>Faktor pendorong:</b><br>{up_text}<br><br><b>Faktor penahan:</b><br>{down_text}<br><br><small>Interpretasi menggambarkan perilaku model dan tidak membuktikan sebab-akibat ekonomi.</small></div>", unsafe_allow_html=True)
                 st.markdown("#### Tabel kontribusi lokal")
-                st.dataframe(style_table(local.sort_values("Abs_SHAP", ascending=False).head(5)), use_container_width=True, hide_index=True, height=260)
-                st.download_button("⬇️ Unduh kontribusi tanggal ini", local.to_csv(index=False).encode("utf-8-sig"), f"local_shap_{chosen_date}.csv", "text/csv")
+                display_table = local.sort_values("Abs_SHAP", ascending=False).head(5).rename(
+                    columns=lambda column: display_label(column)
+                )
+                st.dataframe(style_table(display_table), use_container_width=True, hide_index=True, height=260)
+                st.download_button("⬇Unduh kontribusi tanggal ini", local.to_csv(index=False).encode("utf-8-sig"), f"local_shap_{chosen_date}.csv", "text/csv")
     else:
         st.warning("Tidak ditemukan tanggal SHAP dalam file validasi maupun proyeksi.")
 
@@ -753,13 +731,6 @@ if filtered_detail is not None and not filtered_detail.empty:
             equity_pct = st.slider("Eksposur ekuitas (%)", min_value=0, max_value=100, value=100, step=5)
             confidence = st.select_slider("Tingkat keyakinan VaR", options=[90, 95, 99], value=99, format_func=lambda value: f"{value}%")
             hedge_pct = st.slider("Porsi eksposur yang di-hedge (%)", min_value=0, max_value=100, value=suggested_hedge, step=5)
-            st.markdown(
-                f"<div class='panel'><b>Sinyal acuan</b><p style='margin:8px 0'>{badge_for_risk(signal)}</p>"
-                f"<span class='small-muted'>Tanggal: <span class='date-highlight'>{pd.Timestamp(selected_day).strftime('%d %b %Y')}</span><br>"
-                f"Volatilitas prediksi 5 hari: <b>{forecast_vol:.3%}</b><br>"
-                f"Saran awal porsi hedge untuk skenario: <b>{suggested_hedge}%</b></span></div>",
-                unsafe_allow_html=True,
-            )
 
         base_var_rate = float(losses.quantile(confidence / 100, interpolation="higher"))
         base_es_rate = float(losses[losses >= base_var_rate].mean()) if (losses >= base_var_rate).any() else base_var_rate
@@ -775,20 +746,26 @@ if filtered_detail is not None and not filtered_detail.empty:
 
         with result_col:
             st.markdown("<h4>Estimasi eksposur portofolio</h4>", unsafe_allow_html=True)
-            result_cards = st.columns(3, gap="small")
-            result_data = [
-                ("EKUITAS TERPAPAR", f"Rp {equity_exposure / 1e9:,.0f} M", f"{equity_pct}% dari AUM"),
-                (f"VaR {confidence}% · 5 HARI", f"Rp {var_no_hedge / 1e9:,.1f} M", "Sebelum hedge · training-scaled"),
-                ("VaR SETELAH HEDGE", f"Rp {var_after_hedge / 1e9:,.1f} M", f"Hedge {hedge_pct}% · simulasi proporsional"),
+            result_rows = [
+                [
+                    ("EKUITAS TERPAPAR", f"Rp {equity_exposure / 1e9:,.0f} M", f"{equity_pct}% dari AUM"),
+                    (f"VaR {confidence}% · 5 HARI", f"Rp {var_no_hedge / 1e9:,.1f} M", "Sebelum hedge · training-scaled"),
+                ],
+                [
+                    ("VaR SETELAH HEDGE", f"Rp {var_after_hedge / 1e9:,.1f} M", f"Hedge {hedge_pct}% · simulasi proporsional"),
+                    ("VOLATILITAS PREDIKSI 5 HARI", f"{forecast_vol:.3%}", "Proyeksi volatilitas model"),
+                ],
             ]
-            for col, (label, value, note) in zip(result_cards, result_data):
-                with col:
-                    st.markdown(
-                        f"<div class='metric-card'><div class='metric-label'>{label}</div>"
-                        f"<div class='metric-value' style='font-size:1.25rem'>{value}</div>"
-                        f"<div class='metric-note'>{note}</div></div>",
-                        unsafe_allow_html=True,
-                    )
+            for result_data in result_rows:
+                result_cards = st.columns(2, gap="small")
+                for col, (label, value, note) in zip(result_cards, result_data):
+                    with col:
+                        st.markdown(
+                            f"<div class='metric-card'><div class='metric-label'>{label}</div>"
+                            f"<div class='metric-value' style='font-size:1.25rem'>{value}</div>"
+                            f"<div class='metric-note'>{note}</div></div>",
+                            unsafe_allow_html=True,
+                        )
             st.markdown(
                 f"<div class='panel' style='margin-top:10px'><b>Estimasi expected shortfall {confidence}% · 5 hari</b>"
                 f"<span style='float:right;font-weight:800'>Rp {es_amount / 1e9:,.1f} M</span><br>"
@@ -806,7 +783,7 @@ if filtered_detail is not None and not filtered_detail.empty:
             if pd.notna(xai_date_value):
                 xai_date = pd.Timestamp(xai_date_value).strftime("%d %b %Y")
             local_values = [
-                (column.removeprefix("SHAP_"), float(xai_row[column]))
+                (display_label(column.removeprefix("SHAP_")), float(xai_row[column]))
                 for column in xai_row.index
                 if column.startswith("SHAP_") and pd.notna(xai_row[column])
             ]
@@ -854,9 +831,9 @@ if filtered_detail is not None and not filtered_detail.empty:
             "Faktor_Penahan_SHAP": "; ".join(negative_drivers),
             "Asumsi": "Historical simulation return IHSG forward 5 hari pada subset training, diskalakan dengan rasio proyeksi vol terhadap rata-rata target training; dampak hedge proporsional hipotetis.",
         }])
-        st.download_button("⬇️ Unduh ringkasan simulasi (CSV)", report.to_csv(index=False).encode("utf-8-sig"), "investion_hedging_simulation.csv", "text/csv")
+        st.download_button("⬇Unduh ringkasan simulasi (CSV)", report.to_csv(index=False).encode("utf-8-sig"), "investion_hedging_simulation.csv", "text/csv")
 else:
     st.warning("Data EWS belum tersedia untuk menghitung simulasi portofolio.")
 
 st.divider()
-st.caption("INVESTION · Visualisasi hasil analisis tim. Semua metrik, klasifikasi EWS, kontribusi SHAP, dan asumsi simulasi harus ditinjau sebelum dipakai untuk keputusan atau presentasi final.")
+st.caption("MABA 27 · inception")
