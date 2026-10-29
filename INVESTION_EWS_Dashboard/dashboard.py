@@ -25,7 +25,7 @@ RED = MAROON
 PLOT_BG = "rgba(190,222,255,0.16)"
 
 st.set_page_config(
-    page_title="Volatility Intelligence",
+    page_title="Prediction Volatility Intelligence",
     page_icon="💲",
     layout="wide",
     initial_sidebar_state="collapsed",
@@ -312,7 +312,7 @@ def select_test_date_range(source, date_range):
 
 
 st.markdown(
-    "<h1 class='dashboard-title'> Volatility Intelligence</h1>",
+    "<h1 class='dashboard-title'> Prediction Volatility Intelligence</h1>",
     unsafe_allow_html=True,
 )
 
